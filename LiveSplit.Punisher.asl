@@ -1,21 +1,45 @@
-state("pun")
-{
+state("pun") {
+	string16 flevel: 0x41166C;
+}
+
+state("pun", "EnglishNoCd") {
+	string16 flevel: 0x41166C;
+}
+
+state("pun", "PolandNoCd") {
+	string16 flevel: 0x41166C;
+}
+
+state("pun", "RussianNoCd") {
 	string16 flevel: 0x412A94;
 }
 
-
-init
-{
-	vars.flevel = "";
+init {
+  vars.flevel = "";
+  print("my init size");
+  print(modules.First().ModuleMemorySize.ToString());
+  switch (modules.First().ModuleMemorySize)
+  {
+    case 13652896:
+      version = "EnglishNoCd";
+			print("EnglishNoCd");
+			break;
+    case 13668352:
+      version = "RussianNoCd";
+			print("RussianNoCd");
+			break;
+    case 13656064:
+      version = "PolandNoCd";
+			print("PolandNoCd");
+			break;
+ 	}
 }
 
-start
-{
+start {
 	return (current.flevel == "Intera.ceg");
 }
 
-split
-{	
+split {	
 	if (current.flevel != old.flevel) {
 		print("old.flevel: " + current.flevel + " current.flevel: " + current.flevel);
 
@@ -26,7 +50,6 @@ split
 	return false;
 }
 
-isLoading
-{
+isLoading {
 	return false;
 }
